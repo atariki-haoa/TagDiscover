@@ -1,10 +1,16 @@
-import re
 import requests
 from bs4 import BeautifulSoup
+from bs4 import Comment
 
-print("Escribe la url a ingresar: ")
-url = input()
-req = requests.get(url, stream=True)
+
+while(True):
+    print("Escribe la url a ingresar: ")
+    url = input()            
+    try:
+        req = requests.get(url, stream=True)
+        break
+    except requests.exceptions.RequestException as e:
+        print(e)
 
 html = ''
 for line in req.iter_lines():
@@ -16,7 +22,7 @@ countScriptTags = 0
 jsFindText = soup.findAll('script', type="text/javascript")
 
 for tag in jsFindText:
+    print(tag)
     countScriptTags+=1
 
 print("Cantidad de tags javascript no comentados: " + str(countScriptTags))
-
